@@ -1,6 +1,10 @@
 package soql
 
-import "github.com/g8rswimmer/go-sfdc"
+import (
+	"encoding/json"
+
+	"github.com/g8rswimmer/go-sfdc"
+)
 
 // QueryRecord is the result of the SOQL record.  If
 // the query statement contains an inner query, there
@@ -8,6 +12,18 @@ import "github.com/g8rswimmer/go-sfdc"
 type QueryRecord struct {
 	record     *sfdc.Record
 	subresults map[string]*QueryResult
+}
+
+func (q *QueryRecord) MarshalJSON() ([]byte, error) {
+	v, err := json.Marshal(&struct {
+		Record     *sfdc.Record
+		Subresults map[string]*QueryResult
+	}{
+		Record:     q.record,
+		Subresults: q.subresults,
+	})
+	return v, err
+
 }
 
 func newQueryRecord(jsonMap map[string]interface{}, resource *Resource) (*QueryRecord, error) {
