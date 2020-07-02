@@ -21,6 +21,22 @@ type Record struct {
 	lookUps map[string]*Record
 }
 
+func (r *Record) MarshalJSON() ([]byte, error) {
+	v, err := json.Marshal(&struct {
+		Sobject string
+		Url     string
+		Fields  map[string]interface{}
+		LookUps map[string]*Record
+	}{
+		Sobject: r.sobject,
+		Url:     r.url,
+		Fields:  r.fields,
+		LookUps: r.lookUps,
+	})
+	return v, err
+
+}
+
 // RecordFromJSONMap creates a recrod from a JSON map.
 func RecordFromJSONMap(jsonMap map[string]interface{}) (*Record, error) {
 	if jsonMap == nil {
