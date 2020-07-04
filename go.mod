@@ -1,3 +1,3 @@
-module github.com/ktphy/go-sfdc/v2
+module github.com/ktphy/go-sfdc
 
 go 1.13
